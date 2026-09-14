@@ -1,0 +1,36 @@
+# Python / venv
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*$py.class
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+/staticfiles/
+/media/
+*.pot
+*.mo
+
+# Env / secrets — NEVER commit real values
+.env
+.env.*
+!.env.example
+
+# Node (future-proofing)
+node_modules/
+dist/
+.DS_Store
+
+# OS / editors
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local terminal queue / misc
+*.sqlite3-shm
+*.sqlite3-wal
