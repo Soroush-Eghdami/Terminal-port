@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>soroush@backend: ~/portfolio</title>
+  <meta name="description" content="Soroush Eghdami — Python Backend Developer (Django, REST APIs, Docker, RAG). Terminal-style portfolio." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/terminal.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&gt;_</text></svg>" />
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <main class="terminal-window" id="terminal-window">
+    <header class="terminal-titlebar">
+      <div class="traffic-lights" aria-hidden="true">
+        <span class="light red"></span>
+        <span class="light yellow"></span>
+        <span class="light green"></span>
+      </div>
+      <div class="title">soroush@backend: ~/portfolio — zsh</div>
+      <div class="title-hint" id="backend-status"><span class="status-dot" aria-hidden="true"></span><span id="backend-status-text">static</span></div>
+    </header>
+
+    <div id="terminal" class="terminal" role="log" aria-live="polite" aria-label="Terminal portfolio">
+      <div id="output"></div>
+
+      <div id="input-line" class="input-line">
+        <span class="prompt"><span class="user">visitor</span><span class="at">@</span><span class="host">soroush.dev</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span></span>
+        <span class="input-wrapper">
+          <span id="typed" class="typed"></span><span id="cursor" class="cursor" aria-hidden="true"></span>
+        </span>
+        <!-- hidden input captures mobile keyboards + real keystrokes -->
+        <input id="hidden-input" class="hidden-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Terminal input" />
+      </div>
+    </div>
+
+    <footer class="hint-bar">
+      <span>type <button class="hint-cmd" data-cmd="help">help</button> to start</span>
+      <span class="sep">·</span>
+      <span><kbd>↑</kbd><kbd>↓</kbd> history</span>
+      <span class="sep">·</span>
+      <span><kbd>tab</kbd> autocomplete</span>
+      <span class="sep">·</span>
+      <span><kbd>ctrl</kbd>+<kbd>l</kbd> clear</span>
+    </footer>
+  </main>
+
+  <noscript>
+    <div style="max-width:640px;margin:2rem auto;font-family:monospace;color:#e6edf3">
+      <h1>Soroush Eghdami — Python Backend Developer</h1>
+      <p>This portfolio is a terminal and needs JavaScript. Quick links:</p>
+      <ul>
+        <li><a href="https://github.com/Soroush-Eghdami">GitHub</a></li>
+        <li><a href="https://t.me/inairplanemode">Telegram</a></li>
+        <li><a href="mailto:Soroush.egh@gmail.com">Email</a></li>
+      </ul>
+    </div>
+  </noscript>
+
+  <script src="js/data.js"></script>
+  <script src="js/commands.js"></script>
+  <script src="js/terminal.js"></script>
+</body>
+</html>
