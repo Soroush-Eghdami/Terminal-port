@@ -1,13 +1,4 @@
-"""Pull profile + public repos from GitHub into the DB.
-
-Usage:
-    python manage.py sync_github
-    python manage.py sync_github --username SomeoneElse --no-prune
-
-Needs no token for public data (60 req/hr), but GITHUB_TOKEN lifts it to
-5,000/hr. Non-fork repos become Project rows: primary language + topics map
-to `stack`, stars/featured sync, repos you deleted get pruned by default.
-"""
+"""Pull profile + public repos from GitHub into the DB (GITHUB_TOKEN optional)."""
 import re
 
 import requests

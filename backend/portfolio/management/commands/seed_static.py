@@ -1,8 +1,4 @@
-"""Seed DB from the same content js/data.js ships statically.
-
-Usage: python manage.py seed_static
-Lets you run the full API offline before the first `sync_github`.
-"""
+"""Seed the DB with the static content so the API runs offline."""
 from django.core.cache import cache
 from django.core.management.base import BaseCommand
 

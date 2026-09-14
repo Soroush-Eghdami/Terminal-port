@@ -1,4 +1,4 @@
-"""API contract tests — these shapes are what js/data.js depends on."""
+# Shapes must match what js/data.js expects.
 from unittest.mock import patch
 
 from django.test import TestCase

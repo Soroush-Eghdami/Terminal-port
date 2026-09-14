@@ -1,14 +1,5 @@
-/* ============================================================================
- * data.js — CONTENT LAYER (static now, backend-ready later)
- * ----------------------------------------------------------------------------
- * Everything the terminal renders comes through the async getters below.
- * commands.js NEVER touches `_STATIC` directly — only these functions.
- *
- * TO PLUG IN DJANGO LATER (no rewrite needed):
- *   1. Set `USE_API = true` and `API_BASE = "http://127.0.0.1:8000/api"`.
- *   2. Implement the Django endpoints listed in ENDPOINTS (see backend/README).
- *   3. Done — the getters already try fetch() first and fall back to static.
- * ========================================================================== */
+// Content layer. commands.js only uses the getters below, so going live
+// is just flipping USE_API (or `api on`) — nothing else changes.
 
 const BACKEND_CONFIG = {
   USE_API: false, // <-- flip to true when Django is running (or run `api on` in the terminal)
@@ -23,7 +14,7 @@ const BACKEND_CONFIG = {
   },
 };
 
-// Auto-enable: ?api=1 / ?api=0 in the URL overrides, remembered in localStorage.
+// ?api=1/0 overrides, remembered in localStorage.
 try {
   const q = new URLSearchParams(location.search);
   if (q.has("api")) {
@@ -136,8 +127,6 @@ const _STATIC = {
   resumeUrl: "#", // TODO: drop your PDF at assets/resume.pdf and change to "assets/resume.pdf"
 };
 
-/* ------------------------- internal fetch helper ------------------------ */
-
 async function _fetchJson(path) {
   if (!BACKEND_CONFIG.USE_API) return null;
   try {
@@ -151,10 +140,6 @@ async function _fetchJson(path) {
     return null;
   }
 }
-
-/* ------------------------- public async getters -------------------------
- * Keep these async FOREVER — commands.js awaits them, so when they become
- * real fetch() calls later, nothing else changes.                              */
 
 async function getProfile() {
   return (await _fetchJson(BACKEND_CONFIG.ENDPOINTS.profile)) || _STATIC.profile;
@@ -184,11 +169,7 @@ async function getResumeUrl() {
   return profile.resumeUrl || _STATIC.resumeUrl;
 }
 
-/**
- * Submit the contact form. Static mode: queued locally (localStorage).
- * Backend mode: POSTs to Django (/api/contact/) and falls back to queue
- * if the server is unreachable.
- */
+// Static mode queues locally; backend mode POSTs to /api/contact/.
 async function submitContact({ name, email, message }) {
   const payload = { name, email, message, at: new Date().toISOString() };
 

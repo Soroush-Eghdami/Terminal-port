@@ -1,4 +1,4 @@
-"""Serializers — shapes here are a contract: js/data.js depends on them."""
+# Shapes here are a contract: js/data.js depends on them.
 from rest_framework import serializers
 
 from .models import ContactMessage, Project

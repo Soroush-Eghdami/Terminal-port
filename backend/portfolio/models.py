@@ -1,9 +1,4 @@
-"""Single source of truth once the backend is live.
-
-`sync_github` refreshes Profile/Project rows from GitHub; the API serves the
-DB (fast, cached, no rate-limit surprises). Skills/Socials stay hand-curated
-here until you decide otherwise.
-"""
+"""DB mirror of the terminal content; refreshed by `sync_github`."""
 from django.db import models
 
 

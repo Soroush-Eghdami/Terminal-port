@@ -1,9 +1,4 @@
-/* ============================================================================
- * commands.js — COMMAND REGISTRY
- * Maps input strings -> async handler functions.
- * Only talks to data.js getters (never raw data), so the Django swap is safe.
- * Each handler receives (args, ctx) and returns an HTML string (or uses ctx).
- * ========================================================================== */
+// Command registry: name -> handler. Data comes from data.js getters only.
 
 const COMMANDS = {};
 function registerCommand(name, { desc, usage, fn }) {
@@ -17,8 +12,6 @@ function esc(s) {
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
   }[c]));
 }
-
-/* ------------------------------- commands ------------------------------ */
 
 registerCommand("help", {
   desc: "list all available commands",
@@ -101,8 +94,7 @@ registerCommand("projects", {
       if (!all.length) return `<span class="error">no projects with stack matching "${esc(stackArg)}".</span> <span class="dim">try <span class="run-cmd" data-cmd="projects">projects</span> to see all.</span>`;
     }
 
-    // Default view stays curated: featured first, topped up to 6.
-    // `projects --all` (or any filter flag) shows everything.
+    // Default view: featured first, topped up to 6 (`--all` shows everything).
     const showAll = flags.includes("--all");
     let display = all;
     let capped = 0;
@@ -376,8 +368,6 @@ registerCommand("clear", {
     return "";
   },
 });
-
-/* ------------------------------ easter eggs ---------------------------- */
 
 registerCommand("sudo", {
   desc: "try it and see",

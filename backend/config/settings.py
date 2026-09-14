@@ -1,4 +1,4 @@
-"""Django settings — dev-friendly, env-overridable, Postgres-ready later."""
+"""Dev settings, env-overridable."""
 import os
 from pathlib import Path
 
@@ -17,8 +17,7 @@ def env_list(name, default=""):
     return [x.strip() for x in env(name, default).split(",") if x.strip()]
 
 
-# Minimal .env loader (stdlib only, no dependency): reads backend/.env into
-# os.environ without overriding real environment variables.
+# Minimal .env loader (stdlib only).
 _env_file = BASE_DIR / ".env"
 if _env_file.exists():
     for _line in _env_file.read_text(encoding="utf-8").splitlines():
@@ -90,10 +89,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# --- API / CORS -------------------------------------------------------------
-# Dev convenience: with DEBUG on, accept any origin (covers file:// which
-# sends `Origin: null`, Live Server, Vite, etc.). In production set DEBUG=0
-# and restrict via CORS_ALLOWED_ORIGINS.
+# Open CORS in DEBUG (covers file://); restrict via env in prod.
 CORS_ALLOW_ALL_ORIGINS = DEBUG
 CORS_ALLOWED_ORIGINS = env_list(
     "CORS_ALLOWED_ORIGINS",
@@ -102,7 +98,7 @@ CORS_ALLOWED_ORIGINS = env_list(
     "http://127.0.0.1:8001,http://localhost:8001,"
     "http://127.0.0.1:3000,http://localhost:3000",
 )
-# The terminal only does GETs + one POST; keep DRF permissive + throttled.
+# Per-IP throttle for the contact endpoint.
 REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {
         "contact": "5/hour",  # per-IP throttle on the contact endpoint
@@ -117,15 +113,10 @@ CACHES = {
     }
 }
 GITHUB_CACHE_SECONDS = int(env("GITHUB_CACHE_SECONDS", "21600"))  # 6h
-
-# --- GitHub sync ------------------------------------------------------------
 GITHUB_USERNAME = env("GITHUB_USERNAME", "Soroush-Eghdami")
 GITHUB_TOKEN = env("GITHUB_TOKEN", "")
 
-# --- Contact email ----------------------------------------------------------
-# Gmail SMTP + app password: fill EMAIL_HOST_USER / EMAIL_HOST_PASSWORD and
-# CONTACT_RECIPIENT_EMAIL in backend/.env (see .env.example). Without them,
-# mail prints to the console in dev — messages are still saved to the DB.
+# Gmail SMTP via backend/.env; without it mail goes to console.
 if env("EMAIL_HOST") or env("EMAIL_HOST_USER"):
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
     EMAIL_HOST = env("EMAIL_HOST", "smtp.gmail.com")

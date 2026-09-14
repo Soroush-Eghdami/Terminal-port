@@ -68,7 +68,6 @@ def socials(_request):
 
 @api_view(["GET"])
 def meta(_request):
-    """Health + sync freshness for the terminal status line."""
     p = Profile.objects.filter(pk=1).first()
     return Response(
         {

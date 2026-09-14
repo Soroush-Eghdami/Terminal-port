@@ -1,7 +1,4 @@
-/* ============================================================================
- * terminal.js — CORE: input handling, output rendering, history, completion
- * No content lives here. Rendering + prompting only. Talks to COMMANDS.
- * ========================================================================== */
+// Terminal core: input, history, completion, rendering. No content here.
 (function () {
   "use strict";
 
@@ -32,8 +29,6 @@
   let historyIdx = -1;
   let busy = false; // true while awaiting command / interactive prompt
   let promptQueue = null; // {resolve} for ctx.prompt()
-
-  /* ------------------------------ rendering ----------------------------- */
 
   function scrollBottom() {
     termEl.scrollTop = termEl.scrollHeight;
@@ -68,8 +63,6 @@
     hiddenInput.value = buffer;
   }
 
-  /* --------------------------------- core ------------------------------- */
-
   function clear() {
     outputEl.innerHTML = "";
     print(window.BANNER_HTML); // every fresh screen starts at the banner
@@ -79,8 +72,6 @@
     const parts = raw.trim().split(/\s+/).filter(Boolean);
     return { name: (parts[0] || "").toLowerCase(), args: parts.slice(1) };
   }
-
-  /* -------- friendliness: aliases, quickstart numbers, did-you-mean ------ */
   const ALIASES = {
     h: "help", "?": "help", cls: "clear",
     cv: "resume", mail: "contact", email: "contact",
@@ -155,7 +146,7 @@
     }
   }
 
-  /** Interactive inline prompt used by `contact`. Returns string|null (ESC cancels). */
+  // `contact` prompts resolve here; null = cancelled with ESC.
   function ask(question) {
     return new Promise((resolve) => {
       promptQueue = { resolve, question };
@@ -193,8 +184,6 @@
       });
     }
   }
-
-  /* --------------------------------- input ------------------------------ */
 
   function focusInput() {
     // keep hidden input focused for mobile keyboards; harmless on desktop
@@ -297,19 +286,15 @@
       e.preventDefault();
       complete();
     } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
-      // Single source of truth: handle the keystroke here and suppress the
-      // hidden input's native insertion (otherwise every key types twice).
+      // Suppress the hidden input's native insert or every key types twice.
       e.preventDefault();
       buffer += e.key;
       renderBuffer();
     }
   });
 
-  // mobile / IME: hidden input is source of truth when it changes.
-  // On desktop, keydown above calls preventDefault() so no native insertion
-  // happens and this event won't fire spuriously. On mobile virtual
-  // keyboards (key === 'Unidentified' / keyCode 229) keydown can't capture
-  // the char, so we sync from the input value here instead.
+  // Mobile/IME fallback: desktop keydown prevents native insert (see above),
+  // but virtual keyboards bypass keydown, so sync from the input value here.
   hiddenInput.addEventListener("input", () => {
     if (busy && !promptQueue) return;
     if (hiddenInput.value === buffer) return; // already in sync, ignore echo
@@ -318,8 +303,7 @@
     scrollBottom();
   });
 
-  // Click-to-run: anything with .run-cmd executes its data-cmd on click.
-  // Makes help entries, project slugs, suggestions and the boot menu tappable.
+  // Click-to-run: .run-cmd elements execute their data-cmd.
   outputEl.addEventListener("click", (e) => {
     const el = e.target.closest(".run-cmd");
     if (!el || busy || promptQueue) return;
@@ -346,8 +330,6 @@
     });
   });
 
-  /* --------------------------------- boot ------------------------------- */
-
   try {
     const saved = localStorage.getItem("portfolio_theme");
     if (saved) document.body.dataset.theme = saved;
@@ -356,7 +338,7 @@
   renderBuffer();
   focusInput();
 
-  // Backend status pill in the titlebar (id="backend-status").
+  // Titlebar pill: green "API - Online" vs dim "static".
   function setBackendStatus(online) {
     const pill = document.getElementById("backend-status");
     const label = document.getElementById("backend-status-text");
@@ -366,9 +348,8 @@
   }
   window.__setBackendStatus = setBackendStatus; // `api on|off` calls this
 
-  // Silent auto-connect: if the backend answers, go live without a word;
-  // if not, static content is the fallback (also silent). An explicit
-  // `api off` choice (stored pref "0") is always respected.
+  // Auto-connect when the backend answers, else silent static fallback.
+  // An explicit `api off` choice is always respected.
   (async () => {
     if (typeof BACKEND_CONFIG === "undefined") return;
     let explicitOff = false;
