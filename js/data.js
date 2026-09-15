@@ -124,7 +124,7 @@ const _STATIC = {
     { label: "Bluesky", value: "sorousheghdami.bsky.social", url: "https://bsky.app/profile/sorousheghdami.bsky.social" },
   ],
 
-  resumeUrl: "#", // TODO: drop your PDF at assets/resume.pdf and change to "assets/resume.pdf"
+  resumeUrl: "assets/resume.pdf", // TODO: drop your PDF at assets/resume.pdf and change to "assets/resume.pdf"
 };
 
 async function _fetchJson(path) {
